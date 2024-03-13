@@ -1,0 +1,60 @@
+{
+  "controller": {"PlayerController": {"player": {"Player": {
+    "m_Movement": {"Movement": {
+      "parent": {"Actor": {}},
+      "modifyXCallback": {"Callback": {}},
+      "moveTime": {"Timer": {
+        "duration": 1.5,
+        "elapsed": 0,
+        "autoRestart": false,
+        "paused": false,
+        "onTickCallback": {"Callback": {
+          "arg$2": {"Actor": {}},
+          "arg$1": {"Movement": {}}
+        }},
+        "isDone": true,
+        "onFinishedCallback": {"Callback": {"arg$1": {"Movement": {}}}},
+        "timeLeft": 1.5
+      }},
+      "isMoving": false,
+      "moveAmount": {"PVector": {
+        "array": {"[F": {}},
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }},
+      "modifyYCallback": {"Callback": {}},
+      "newLocation": {"PVector": {}}
+    }},
+    "m_Rect": {"Rect": {
+      "edgeL": -16,
+      "halfH": 16,
+      "halfW": 16,
+      "w": 32,
+      "x": 0,
+      "h": 32,
+      "y": 0,
+      "edgeT": -16,
+      "edgeR": 16,
+      "edgeB": 16
+    }},
+    "rotation": {"PVector": {}},
+    "scale": {"PVector": {
+      "array": {"[F": {}},
+      "x": 1,
+      "y": 1,
+      "z": 1
+    }},
+    "location": {"PVector": {}}
+  }}}},
+  "test": {"Timer": {
+    "duration": 1,
+    "elapsed": 0,
+    "autoRestart": true,
+    "paused": false,
+    "onTickCallback": {"Callback": {}},
+    "isDone": false,
+    "onFinishedCallback": {"Callback": {}},
+    "timeLeft": 1
+  }}
+}
