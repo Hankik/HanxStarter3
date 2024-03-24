@@ -2,151 +2,97 @@ import java.lang.reflect.*;
 import java.util.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.lang.ref.WeakReference;
+import java.util.UUID;
 
 // TIMESTEP //
-double t, prevTime = 0.0;
-double _dt = 1/ 60.0;
-double elapsed = 0.0;
-
-double currentTime = millis() / 1000;
-double accumulator = 0.0;
+float dt, prevTime = 0.0;
+float elapsed = 0.0;
 // TIMESTEP
-Level test;
+
+// TILE GLOBALS //
+final float GRID_X_OFFSET = 224;
+final float TILE_SIZE = 32;
+/* Use getGridLocation(PVector) to map items into grid */
+// TILE GLOBALS // 
+
+// LEVEL GLOBALS //
+ArrayList<Level> levels = new ArrayList();
+int currentLevel = 0;
+final int UI_SCENE_AMOUNT = 1;
+Level[] uiScenes = new Level[UI_SCENE_AMOUNT];
+Level hud;
+JSONSerializer serializer;
+// LEVEL GLOBALS //
+
+// FONT GLOBALS //
+PFont maiandra;
+// FONT GLOBALS //
+
+HanxStarter3 applet = this; // We need this for the Constructor class method newInstance(applet, ... (other parameters);
+
+boolean paused = false;
 
 void setup() {
-  surface.setTitle("HaxStarterTemplate");
+  
+  maiandra = createFont("Maiandra GD", 48);
+  
+  surface.setTitle("HanxStarter3");
   surface.setResizable(false);
   size(1280, 720);
   frameRate(60);
+  
+  hud = createUI(LEVEL_TYPE.HUD);
+  
+  levels.add( new Level(LEVEL_TYPE.LEVEL) );
 
-  test = new Level();
-
-  JSONSerializer serializer = new JSONSerializer();
-  JSONObject json = serializer.getContents(test);
+  serializer = new JSONSerializer();
+  JSONObject json = serializer.getContents(levels.get(0));
   saveJSONObject(json, "data/save.json");
+  
+  for (Level level : levels) level.handleCommands(); // handle any important commands gathered in deserialization
 }
 
 void draw() {
-  background(0);
-
-//  double newTime = millis() / 1000;
-//  double frameTime = newTime - currentTime;
-//  currentTime = newTime;
-
-//  accumulator += frameTime;
-
-//  while ( accumulator >= _dt ) {
-//    // update everything
-//    test.update(_dt);
-//    println("u");
-//    t += _dt;
-//    accumulator -= _dt;
-//  }
+  background(BLACK);
+  
  // calculate delta time
   float currTime = millis();
-  _dt = (currTime - prevTime) / 1000;
+  dt = (currTime - prevTime) / 1000;
   prevTime = currTime;
   
-  elapsed += _dt;
-  test.update(_dt);
-
-  final double timeStepRemaining = accumulator / _dt;
-  test.display(timeStepRemaining);
+  elapsed += dt;
+  hud.update();
+  if (!paused) levels.get(currentLevel).update();
+  
+  levels.get(currentLevel).display();
+  hud.display();
 }
 
 void mousePressed(){
-  test.mousePressed();
+  hud.mousePressed();
+  levels.get(currentLevel).mousePressed();
 }
 
 void mouseReleased(){
-  test.mouseReleased();
+  hud.mouseReleased();
+  levels.get(currentLevel).mouseReleased();
 }
 
 void keyPressed(){
   Keyboard.handleKeyDown(keyCode);
-  test.keyPressed();
+  hud.keyPressed();
+  levels.get(currentLevel).keyPressed();
 }
 
 
 void keyReleased(){
   Keyboard.handleKeyUp(keyCode);
-  test.keyReleased();
-}
-
-public class JSONSerializer {
-
-  private Set<Object> visitedObjects = new HashSet<>();
-
-  // This function ignores the type of o (only serializing its contents)
-  JSONObject getContents(Object o) {
-    visitedObjects.clear(); // Clear the set before each serialization
-    return serializeObject(o);
-  }
-
-  private JSONObject serializeObject(Object o) {
-    JSONObject contents = new JSONObject();
-    if (o == null) return contents;
-    if (visitedObjects.contains(o)) {
-      // Object already visited, return an empty JSON object or handle as needed
-      return contents;
-    }
-
-    visitedObjects.add(o);
-
-    Field[] fields = o.getClass().getDeclaredFields();
-    List<Field> extFields = new ArrayList<>(Arrays.asList(fields));
-    List<Field> superFields = Arrays.asList(o.getClass().getSuperclass().getDeclaredFields()); 
-    extFields.addAll( superFields );
-
-    for (Field field : extFields) {
-      try {
-        field.setAccessible(true); 
-        Class<?> fieldType = field.getType();
-        if (field.isSynthetic()) continue;
-        if (isUserDefinedClass(fieldType)) {
-          JSONObject subobject = new JSONObject();
-          println(field.getName() + ", " + cleanName(fieldType.getName()) + ", " + ((field.get(o) != null) ? cleanName(field.get(o).toString()) : "null"));
-          contents.setJSONObject(field.getName(), subobject.setJSONObject(cleanName(fieldType.getName()), serializeObject(field.get(o))));
-        } else {
-          switch (fieldType.getName()) {
-            case "boolean":
-              contents.setBoolean(field.getName(), field.getBoolean(o));
-            break;
-          case "int":
-            contents.setInt(field.getName(), field.getInt(o));
-            break;
-          case "float":
-            contents.setFloat(field.getName(), field.getFloat(o));
-            break;
-          case "double":
-            contents.setDouble(field.getName(), field.getDouble(o));
-            break;
-          case "long":
-            contents.setLong(field.getName(), field.getLong(o));
-            break;
-          default:
-            if (field.isEnumConstant()) contents.setString(field.getName(), (String) field.get(o));
-            // Add additional handling for other types if needed
-            break;
-          }
-        }
-      }
-      catch (Exception e) {
-        e.printStackTrace(); // Handle exceptions appropriately
-      }
-    }
-    return contents;
-  }
-
-  private boolean isUserDefinedClass(Class<?> type) {
-    // Exclude primitive types and common Java types
-    return !type.isPrimitive() && !type.getName().startsWith("java");
-  }
-  
-  String cleanName(String name) {
-  
-    if (name.startsWith("processing.core.")) return name.substring(16);
-    if (name.startsWith("HanxStarter3")) return name.substring(13);
-    return name;
+  hud.keyReleased();
+  levels.get(currentLevel).keyReleased();
+  if (key == 'p') paused = !paused;
+  if (key == '.') {
+    currentLevel++;
+    if (currentLevel >= levels.size()) currentLevel = 0;
   }
 }

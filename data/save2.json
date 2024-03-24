@@ -1,0 +1,225 @@
+{"Level": {
+  "actors": {
+    "Player@f824f52": {
+      "components": {
+        "Movement@1c641073": {
+          "parent": {},
+          "moveTime": "fc180c9b-d531-4a7f-b61a-d806c8e5d64c",
+          "isMoving": false,
+          "moveAmount": {},
+          "id": "3c6dfe1b-596d-4173-9a1b-aeaccb5834a2",
+          "newLocation": {}
+        },
+        "Rect@7d063f48": {
+          "parent": {},
+          "halfW": 16,
+          "h": 32,
+          "edgeT": 0,
+          "localPosition": {},
+          "edgeR": 256,
+          "edgeL": 224,
+          "halfH": 16,
+          "w": 32,
+          "x": 240,
+          "y": 16,
+          "edgeB": 32,
+          "id": "b08ce926-1234-4970-acb2-2a5a7b253296"
+        }
+      },
+      "m_Movement": "3c6dfe1b-596d-4173-9a1b-aeaccb5834a2",
+      "m_Rect": "b08ce926-1234-4970-acb2-2a5a7b253296",
+      "location": {},
+      "id": "38d0e3fc-8ccb-4fc8-9654-88c038cd85b2",
+      "actorState": {"ACTOR_STATE": "LEVEL_TYPE.LEVEL"}
+    },
+    "Button@6ee394a2": {
+      "rect": "ce8b7150-c498-4844-8500-d62a09b12bf1",
+      "components": {"Rect@6f0b6bc5": {
+        "parent": {},
+        "halfW": 16,
+        "h": 32,
+        "edgeT": 64,
+        "localPosition": {},
+        "edgeR": 544,
+        "edgeL": 512,
+        "halfH": 16,
+        "w": 32,
+        "x": 528,
+        "y": 80,
+        "edgeB": 96,
+        "id": "ce8b7150-c498-4844-8500-d62a09b12bf1"
+      }},
+      "location": {"PVector": {
+        "x": 528,
+        "y": 80,
+        "z": 0
+      }},
+      "text": "-",
+      "state": {"ButtonState": "LEVEL_TYPE.LEVEL"},
+      "id": "2084f19d-babc-4a5d-99fc-e359d16c7806",
+      "actorState": {"ACTOR_STATE": "LEVEL_TYPE.LEVEL"}
+    },
+    "Tile@692fddcb": {
+      "components": {"Rect@1916c80b": {
+        "parent": {},
+        "halfW": 16,
+        "h": 32,
+        "edgeT": 0,
+        "localPosition": {"PVector": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }},
+        "edgeR": 256,
+        "edgeL": 224,
+        "halfH": 16,
+        "w": 32,
+        "x": 240,
+        "y": 16,
+        "edgeB": 32,
+        "id": "ab84ae6d-b44c-43b3-a05e-474aa492ac10"
+      }},
+      "heldItem": "38d0e3fc-8ccb-4fc8-9654-88c038cd85b2",
+      "location": {"PVector": {
+        "x": 240,
+        "y": 16,
+        "z": 0
+      }},
+      "id": "458b37e6-a30b-45df-b13e-f291492cd839",
+      "actorState": {"ACTOR_STATE": "LEVEL_TYPE.LEVEL"}
+    },
+    "Button@69f6f5de": {
+      "rect": "dd3df7db-5572-406d-86e4-7d27c21b1e00",
+      "components": {"Rect@fb8112b": {
+        "parent": {},
+        "halfW": 16,
+        "h": 32,
+        "edgeT": 128,
+        "localPosition": {},
+        "edgeR": 928,
+        "edgeL": 896,
+        "halfH": 16,
+        "w": 32,
+        "x": 912,
+        "y": 144,
+        "edgeB": 160,
+        "id": "dd3df7db-5572-406d-86e4-7d27c21b1e00"
+      }},
+      "location": {"PVector": {
+        "x": 912,
+        "y": 144,
+        "z": 0
+      }},
+      "text": "-",
+      "state": {"ButtonState": "LEVEL_TYPE.LEVEL"},
+      "id": "3941bc4d-02fe-4c8e-9489-ac99c350b4d0",
+      "actorState": {"ACTOR_STATE": "LEVEL_TYPE.LEVEL"}
+    },
+    "Button@2f2337e2": {
+      "rect": "65737526-e0e9-484b-a1b3-e77cb196adf2",
+      "components": {"Rect@5d17ee66": {
+        "parent": {},
+        "halfW": 16,
+        "h": 32,
+        "edgeT": 96,
+        "localPosition": {},
+        "edgeR": 448,
+        "edgeL": 416,
+        "halfH": 16,
+        "w": 32,
+        "x": 432,
+        "y": 112,
+        "edgeB": 128,
+        "id": "65737526-e0e9-484b-a1b3-e77cb196adf2"
+      }},
+      "location": {"PVector": {
+        "x": 432,
+        "y": 112,
+        "z": 0
+      }},
+      "text": "-",
+      "state": {"ButtonState": "LEVEL_TYPE.LEVEL"},
+      "id": "19c7486f-6b87-411e-a635-a16bc5b13c7b",
+      "actorState": {"ACTOR_STATE": "LEVEL_TYPE.LEVEL"}
+    },
+    "Button@6a770699": {
+      "rect": "bd2c4eea-ba04-4726-8347-fcbbe7f0b491",
+      "components": {"Rect@5c5da6d7": {
+        "parent": {},
+        "halfW": 16,
+        "h": 32,
+        "edgeT": 96,
+        "localPosition": {},
+        "edgeR": 832,
+        "edgeL": 800,
+        "halfH": 16,
+        "w": 32,
+        "x": 816,
+        "y": 112,
+        "edgeB": 128,
+        "id": "bd2c4eea-ba04-4726-8347-fcbbe7f0b491"
+      }},
+      "location": {},
+      "text": "-",
+      "state": {"ButtonState": "LEVEL_TYPE.LEVEL"},
+      "id": "74794047-3a70-405d-aa0b-982d9ee14f05",
+      "actorState": {"ACTOR_STATE": "LEVEL_TYPE.LEVEL"}
+    },
+    "Button@3e5b0ba4": {
+      "rect": "6510efd2-2268-4aa2-afcd-84c7fcf45cbe",
+      "components": {"Rect@60dd5a64": {
+        "parent": {},
+        "halfW": 16,
+        "h": 32,
+        "edgeT": 96,
+        "localPosition": {},
+        "edgeR": 832,
+        "edgeL": 800,
+        "halfH": 16,
+        "w": 32,
+        "x": 816,
+        "y": 112,
+        "edgeB": 128,
+        "id": "6510efd2-2268-4aa2-afcd-84c7fcf45cbe"
+      }},
+      "location": {"PVector": {
+        "x": 816,
+        "y": 112,
+        "z": 0
+      }},
+      "text": "-",
+      "state": {"ButtonState": "LEVEL_TYPE.LEVEL"},
+      "id": "c2f7533d-50e0-4fc7-9cb2-65fc6de4beec",
+      "actorState": {"ACTOR_STATE": "LEVEL_TYPE.LEVEL"}
+    },
+    "Button@54dd1d9f": {
+      "rect": "a707f5d9-f2bc-430f-80d1-f37b1fb04ced",
+      "components": {"Rect@316dfb0e": {
+        "parent": {},
+        "halfW": 16,
+        "h": 32,
+        "edgeT": 256,
+        "localPosition": {},
+        "edgeR": 672,
+        "edgeL": 640,
+        "halfH": 16,
+        "w": 32,
+        "x": 656,
+        "y": 272,
+        "edgeB": 288,
+        "id": "a707f5d9-f2bc-430f-80d1-f37b1fb04ced"
+      }},
+      "location": {"PVector": {
+        "x": 656,
+        "y": 272,
+        "z": 0
+      }},
+      "text": "-",
+      "state": {"ButtonState": "LEVEL_TYPE.LEVEL"},
+      "id": "7a8968eb-7001-4dfd-a7cc-70a181121e24",
+      "actorState": {"ACTOR_STATE": "LEVEL_TYPE.LEVEL"}
+    }
+  },
+  "type": {"LEVEL_TYPE": "LEVEL_TYPE.LEVEL"},
+  "commands": {}
+}}

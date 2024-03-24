@@ -6,8 +6,8 @@ class Movement extends Component {
   PVector newLocation;
   boolean isMoving = false;
   
+  
   Movement(Actor parent) {
-    name = "movement";
     
     
     this.parent = parent;
@@ -19,7 +19,7 @@ class Movement extends Component {
       parent.location = PVector.lerp(parent.location, 
                                      newLocation, 
                                      moveTime.elapsed/moveTime.duration); 
-      return null; 
+      return false; 
     };
     moveTime.onFinishedCallback= () -> {
       isMoving = false;
@@ -27,17 +27,19 @@ class Movement extends Component {
       moveTime.reset();
       return null;
     };
+    
   }
 
-  void update(double dt){ 
+  void update(){ 
     
-    moveTime.update(dt);
+    moveTime.update();
   }
   
   void move(PVector moveAmount) {
     
     if (isMoving) {
-      if ((moveTime.elapsed / moveTime.duration) < 0.4) return;
+      if ((moveTime.elapsed / moveTime.duration) < 0.4) return;  // this weirdness is to allow a fast transition between move actions 
+      // essentially if passed 40% of the move, teleport to target location and start next move
       this.parent.location = newLocation;
       moveTime.onFinishedCallback.call();
     }
@@ -49,5 +51,5 @@ class Movement extends Component {
   
   void setMoveTime(float time) {  moveTime.duration = time; }
   
-  void display(double alpha) {}
+  void display() {}
 }

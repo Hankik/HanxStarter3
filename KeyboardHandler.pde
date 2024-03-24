@@ -26,8 +26,8 @@ static public class Keyboard {
   // true = isDown
   // false = !isDown
   private static void handleKey(int code, boolean isDown) {
-    keys[code] = isDown;                                                                    // bullets.get(i); -> ArrayList
-  }                                                                                         // bullets[i]; -> Array
+    keys[code] = isDown;                                                                    
+  }                                                                                        
 
   // Set the state of the key to FALSE;
   // @param code: keyCode of that key.
