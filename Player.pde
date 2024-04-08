@@ -1,39 +1,68 @@
-class Player extends Actor implements Listens { // this will not be in the end product
+class Player extends Actor implements Listens, Draggable, TileHolds { // player will not be in the end product
   
-  Movement m_Movement;
-  Rect m_Rect;
+  Movement movement;
+  Rect rect;
+  ArrayList<Tile> path = new ArrayList();
+  int currentPathTile = 0;
   
   Player(){ 
     
     PVector startPosition = getGridLocation( new PVector(GRID_X_OFFSET, 0) );
     location = new PVector(startPosition.x, startPosition.y);
-    m_Movement = (Movement) addComponent("Movement");
-    m_Rect = (Rect) addComponent("Rect");
+    movement = (Movement) addComponent("Movement");
+    rect = (Rect) addComponent("Rect");
+    rect.fillOpacity = 0;
+    rect.stroke = WHITE;
+    rect.strokeOpacity = 1;
+    layer = 2;
     
   }
   
   void update(){
   
-    m_Rect.update();
+    rect.update();
     update(components);
     
-    if (Keyboard.isDown(Keyboard.LEFT) && !Keyboard.isDown(Keyboard.RIGHT))
-      m_Movement.move( new PVector(-TILE_SIZE, 0)  ); 
-    if (!Keyboard.isDown(Keyboard.LEFT) && Keyboard.isDown(Keyboard.RIGHT))
-      m_Movement.move( new PVector(TILE_SIZE, 0) ); 
-    if (Keyboard.isDown(Keyboard.UP) && !Keyboard.isDown(Keyboard.DOWN))
-      m_Movement.move( new PVector(0, -TILE_SIZE) );
-    if (!Keyboard.isDown(Keyboard.UP) && Keyboard.isDown(Keyboard.DOWN))
-      m_Movement.move( new PVector(0, TILE_SIZE) ); 
+    if (currentPathTile < path.size()) {
+    
+      PVector moveAmount = PVector.sub(path.get(currentPathTile).location, location);
+      movement.move(moveAmount);
+      if (abs(moveAmount.mag()) < 0.01) currentPathTile++;
+      
+    }
     
     
   }
   void display(){
   
     display(components);
+    for (int i = currentPathTile-1; i < path.size()-1; i++) {
+        PVector start = i == currentPathTile-1 ? location : path.get(i).location;
+        PVector end = path.get(i+1).location;
+        stroke(LIGHTBLUE);
+        strokeWeight(4);
+        line(start.x, start.y, end.x, end.y);
+    }
+    PVector end = path.size() > 0 ? path.get(path.size()-1).location : null;
+    if (end != null && currentPathTile < path.size()) rect(end.x, end.y, TILE_SIZE/2, TILE_SIZE/2, 4);
+    
+    strokeWeight(1);
   }
   
-  void keyPressed(){}
+  void keyPressed(){
+  
+    if (key == ENTER) {
+      
+      currentPathTile = 0;
+      TileMap tmap = (TileMap) levels.get(currentLevel).getActor("TileMap");
+      if (!tmap.rect.checkCollidingWithPoint(cursor.location)) return;
+      Tile startTile = tmap.getTileAtLocation(location);
+      Tile goalTile = tmap.getTileAtLocation(cursor.location);
+      if (startTile == null || goalTile == null) return;
+      path = findPath(startTile, goalTile);
+      if (path == null) path = new ArrayList();
+    }
+  }
   
   void keyReleased(){}
   

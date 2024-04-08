@@ -2,8 +2,10 @@ abstract class Actor implements Updates, Displays { // abstract means you cannot
 
   String id = UUID.randomUUID().toString();
   PVector location = new PVector(0, 0);
+
   ArrayList<Object> components = new ArrayList(); // do not add non-component types
   ACTOR_STATE actorState = ACTOR_STATE.AWAKE;
+  int layer = 0;
 
   Component addComponent(String name) {
     try {
@@ -20,7 +22,7 @@ abstract class Actor implements Updates, Displays { // abstract means you cannot
         // SORRY THIS IS SOME ARCANE SHIT
         // Instantiate the class
         // --------------------- requires we pass in the parameter signature to find the constructor we want ().newInstance( pass in those arguments now );
-        Component component = (Component) type.getDeclaredConstructor(parameterTypes).newInstance(applet, this); // all constructors have a hidden HanxStarter3.class instance passed in
+        Component component = (Component) type.getDeclaredConstructor(parameterTypes).newInstance(applet, this); // trivia: all constructors have a hidden HanxStarter3.class instance passed in
 
         // Add the component to the list
         components.add(component);
@@ -47,6 +49,19 @@ abstract class Actor implements Updates, Displays { // abstract means you cannot
   abstract void update();
 
   abstract void display();
+  
+  void addComponent(Component component)  { components.add(component); }
+  
+  // I have not tested this
+  <T extends Component> T getComponent(Class<T> componentClass){ // pass in something like Movement.class to get a movement component
+    
+    for (Object c : components) {
+      Component component = (Component) c;
+      if (componentClass.isInstance(component)) return componentClass.cast(component);
+    }
+  
+    return null;
+  }
 }
 
 abstract class Component implements Updates, Displays {
@@ -58,45 +73,46 @@ abstract class Component implements Updates, Displays {
 
   Component() {
   }
+  
   Component(Actor parent) {
     this.parent = parent;
   }
 
   // this might be useful...
-  void setProperty(String name, Class<?> type, Object value) {
+  //void setProperty(String name, Class<?> type, Object value) {
 
-    try {
-      Field field = getClass().getField(name);
-      if (isUserDefinedClass(type)) {
-        field.set(this, (Class<?>) value);
-      } else {
-        switch (type.getName()) {
-        case "boolean":
-            field.setBoolean(this, (boolean) value);
-          break;
-        case "int":
-          field.setInt(this, (int) value);
-          break;
-        case "float":
-          field.setFloat(this, (float) value);
-          break;
-        case "double":
-          field.setDouble(this, (double) value);
-          break;
-        case "long":
-          field.setLong(this, (long) value);
-          break;
-        default:
-          if (field.isEnumConstant()) field.set(this, (Class<?>) value);
-          // Add additional handling for other types if needed
-          break;
-        }
-      }
-    }
-    catch(NoSuchFieldException | IllegalAccessException e) {
-      println("Failed to add field " + name + ": " + e);
-    }
-  }
+  //  try {
+  //    Field field = getClass().getField(name);
+  //    if (isUserDefinedClass(type)) {
+  //      field.set(this, (Class<?>) value);
+  //    } else {
+  //      switch (type.getName()) {
+  //        case "boolean":
+  //          field.setBoolean(this, (boolean) value);
+  //        break;
+  //        case "int":
+  //          field.setInt(this, (int) value);
+  //        break;
+  //      case "float":
+  //        field.setFloat(this, (float) value);
+  //        break;
+  //      case "double":
+  //        field.setDouble(this, (double) value);
+  //        break;
+  //      case "long":
+  //        field.setLong(this, (long) value);
+  //        break;
+  //      default:
+  //        if (field.isEnumConstant()) field.set(this, (Class<?>) value);
+  //        // Add additional handling for other types if needed
+  //        break;
+  //      }
+  //    }
+  //  }
+  //  catch(NoSuchFieldException | IllegalAccessException e) {
+  //    println("Failed to add field " + name + ": " + e);
+  //  }
+  //}
 }
 
 Actor createActor(String name) {
@@ -125,13 +141,13 @@ Actor createActor(String name) {
   catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
     println("\nError instantiating actor: " + e+"\n");
   }
-  
+
   return null;
 }
 
 enum ACTOR_STATE {
 
   AWAKE,
-  ASLEEP,
-  DEAD
+    ASLEEP,
+    DEAD
 }

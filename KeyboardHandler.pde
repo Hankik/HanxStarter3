@@ -26,8 +26,8 @@ static public class Keyboard {
   // true = isDown
   // false = !isDown
   private static void handleKey(int code, boolean isDown) {
-    keys[code] = isDown;                                                                    
-  }                                                                                        
+    keys[code] = isDown;
+  }
 
   // Set the state of the key to FALSE;
   // @param code: keyCode of that key.
@@ -52,6 +52,4 @@ static public class Keyboard {
   public static boolean onDown(int code) {
     return (keys[code] && !pKeys[code]);
   }
-
-  
 }

@@ -5,6 +5,12 @@ class Rect extends Component {
   float edgeL, edgeR, edgeT, edgeB;
   float halfW, halfH;
   
+  // draw variables
+  color fill = 0;
+  float fillOpacity = 1; // 0-1 keep normalized
+  color stroke = WHITE;
+  float strokeOpacity = 1;
+  
   Rect(Actor parent){
     
   
@@ -46,12 +52,16 @@ class Rect extends Component {
   }
 
   boolean checkCollidingWith(Rect other) {
-
     if (edgeR < other.edgeL) return false;
     if (edgeL > other.edgeR) return false;
     if (edgeB < other.edgeT) return false;
     if (edgeT > other.edgeB) return false;
     return true;
+  }
+  
+  boolean checkCollidingWithPoint(PVector point) {
+    if (edgeR > point.x && edgeL < point.x && edgeT < point.y && edgeB > point.y) return true;
+    return false;
   }
 
   void update() {
@@ -63,8 +73,8 @@ class Rect extends Component {
   void display() {
     
     rectMode(CENTER);
-    noFill();
-    stroke(255);
+    fill(fill, clamp(fillOpacity, 0, 1) * 255);
+    stroke(stroke, clamp(strokeOpacity, 0, 1) * 255);
     rectMode(CENTER);
     rect(x, y, w, h, 10);
   }

@@ -1,27 +1,31 @@
-class Button extends Actor implements Listens, TileHolds {
+class DJ extends Actor implements Listens, TileHolds {
 
   String text = "";
   Rect rect;
+  RadialCollision radial;
   ButtonState state = ButtonState.IDLE;
   Callback purposeCallback = () -> {
-    println("\nButton does nothing");
+    println("\nThis is a DJ");
     return false;
   };
 
-  Button() {
+  DJ() {
     rect = (Rect) addComponent("Rect");
+    radial = (RadialCollision) addComponent("RadialCollision");
     rect.setSize(TILE_SIZE, TILE_SIZE);
   }
 
-  Button(PVector location, PVector size, String text, Callback purpose) {
+  DJ(PVector location, PVector size, String text, Callback purpose) {
 
     rect = new Rect(location.x, location.y, size.x, size.y);
+    radial = new RadialCollision(location.x, location.y, 150);
     this.purposeCallback = purpose;
     this.text = text;
   }
 
   void update() {
     rect.update();
+    radial.update();
 
     switch (state) {
 
@@ -76,18 +80,18 @@ class Button extends Actor implements Listens, TileHolds {
   }
 
   void display() {
-    rectMode(CENTER);
-    noStroke();
-    fill(0, .4 * 255);
-    rect( rect.x + 3, rect.y + 2, rect.w, rect.h, 8);
-    
+    //radial.fill = WHITE;
+    fill(WHITE);
+    //radial.fillOpacity = 1;
+    circle(radial.x, radial.y, radial.r);
+
     switch (state) {
 
     case IDLE:
-      fill(LIGHTBLUE);
+      fill(PURPLE);
       break;
     case HOVERED:
-      fill(BLUE);
+      fill(DARKPURPLE);
       break;
     case PRESSED:
       fill(DARKBLUE);
@@ -95,12 +99,12 @@ class Button extends Actor implements Listens, TileHolds {
     case RELEASED:
       fill(DARKBLUE);
       break;
-    }
+    }    
     stroke(0);
     textFont(font);
     strokeWeight(1);
     rectMode(CENTER);
-    rect( rect.x, rect.y, rect.w, rect.h, 8);
+    rect(rect.x, rect.y, rect.w, rect.h, 8);
     fill(0);
     textAlign(CENTER, CENTER);
     textSize(16);
@@ -139,7 +143,7 @@ class Button extends Actor implements Listens, TileHolds {
   }
 }
 
-enum ButtonState {
+enum DJState {
 
   IDLE,
     HOVERED,
